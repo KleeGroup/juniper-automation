@@ -15,7 +15,7 @@ arguments = {
     'config_group_name': 'junos configuration group name (default: O365)',
     'addressbook_name': 'junos addressbook name (default: <*>)',
     'objects_prefix': 'junos address objects prefix (default: O365_)',
-    'object_group_name': 'junos object group name (default: Grp_O365)'
+    'object_group_name': 'junos object group name (default: Grp_O365)',
     'tenantname': 'o365 tenant name (optionnal)',
     'serviceareas': 'o365 service area (optionnal: Common | Exchange | SharePoint | Skype)',
     'instance': 'o365 instance (default: Worldwide, Worldwide | China | Germany | USGovDoD | USGovGCCHigh)'
