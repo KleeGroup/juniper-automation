@@ -10,7 +10,13 @@ import urllib.request
 import uuid
 import ssl
 
-arguments = {'debug': 'enable debug output'}
+arguments = {
+    'debug': 'enable debug output',
+    'config_group_name': 'set configuration group name (default: O365)',
+    'addressbook_name': 'set addressbook name (default: <*>)',
+    'objects_prefix': 'set adress objects prefix (default: O365_)',
+    'object_group_name': 'set object group name (default: Grp_O365)'
+}
 
 def main():
 
@@ -29,6 +35,10 @@ def main():
 
     # Extract the value
     debug = args.debug
+    config_group_name = args.config_group_name or 'O365'
+    addressbook_name = args.addressbook_name or '&lt;*&gt;'
+    objects_prefix = args.objects_prefix or 'O365_'
+    object_group_name = args.object_group_name or 'Grp_O365'
 
     clientRequestId = str(uuid.uuid4())
     endpointSets = webApiGet('endpoints', 'Worldwide', clientRequestId)
@@ -50,33 +60,33 @@ def main():
     config_xml = """
     <configuration>
         <groups>
-            <name>O365</name>
+            <name>{0}</name>
             <security replace="replace">
                 <address-book>
-                    <name>&lt;*&gt;</name>
-"""
+                    <name>{1}</name>
+""".format(config_group_name,addressbook_name).strip()
 
     i=0
     for flatIp in flatIps:
         i += 1
         config_xml = config_xml + """
                     <address>
-                        <name>O365_{0}</name>
-                        <ip-prefix>{1}</ip-prefix>
+                        <name>{0}{1}</name>
+                        <ip-prefix>{2}</ip-prefix>
                     </address>
- """.format(i,flatIp[1]).strip()
+ """.format(objects_prefix,i,flatIp[1]).strip()
 
     i=0 
     for flatIp in flatIps:
         i += 1
         config_xml = config_xml + """
                     <address-set>
-                        <name>Grp_O365</name>
+                        <name>{0}</name>
                         <address>
-                            <name>O365_{0}</name>
+                            <name>{1}{2}</name>
                         </address>
                     </address-set>
- """.format(i,flatIp[1]).strip()
+ """.format(object_group_name,objects_prefix,i).strip()
  
     config_xml = config_xml + """
                 </address-book>
@@ -91,7 +101,7 @@ def main():
     dev.open()
     try:
         with Config(dev, mode="exclusive") as cu:
-            print ("Loading and committing configuration changes")
+            print ("    Loading and committing configuration changes")
             cu.load(config_xml, format="xml")
             if debug:
                 cu.pdiff()
