@@ -18,7 +18,7 @@ arguments = {
     'object_group_name': 'junos object group name (default: Grp_O365)'
     'tenantname': 'o365 tenant name (optionnal)',
     'serviceareas': 'o365 service area (optionnal: Common | Exchange | SharePoint | Skype)',
-    'instance': 'o365 instance (default: Worldwide, Worldwide | China | Germany | USGovDoD | USGovGCCHigh)',
+    'instance': 'o365 instance (default: Worldwide, Worldwide | China | Germany | USGovDoD | USGovGCCHigh)'
 }
 
 def main():
