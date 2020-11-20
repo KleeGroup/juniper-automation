@@ -95,7 +95,7 @@ def main():
             cu.load(config_xml, format="xml")
             if debug:
                 cu.pdiff()
-            diff = cu.diff(use_fast_diff=True)
+            diff = cu.diff()
             if diff is not None:
                 cu.commit()
 
