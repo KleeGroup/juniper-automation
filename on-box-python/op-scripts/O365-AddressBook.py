@@ -128,9 +128,9 @@ def main():
 def webApiGet(methodName, instanceName, clientRequestId,TenantName=None,ServiceAreas=None):
     ws = "https://endpoints.office.com"
     requestPath = ws + '/' + methodName + '/' + instanceName + '?clientRequestId=' + clientRequestId
-    if TenantName is not None
+    if TenantName is not None:
         requestPath = requestPath + '&TenantName=' + TenantName
-    if ServiceAreas is not None
+    if ServiceAreas is not None:
         requestPath = requestPath + '&ServiceAreas=' + ServiceAreas
     ssl_context = ssl._create_unverified_context()
     request = urllib.request.Request(requestPath)
