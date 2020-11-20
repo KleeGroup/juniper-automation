@@ -12,10 +12,13 @@ import ssl
 
 arguments = {
     'debug': 'enable debug output',
-    'config_group_name': 'set configuration group name (default: O365)',
-    'addressbook_name': 'set addressbook name (default: <*>)',
-    'objects_prefix': 'set adress objects prefix (default: O365_)',
-    'object_group_name': 'set object group name (default: Grp_O365)'
+    'config_group_name': 'junos configuration group name (default: O365)',
+    'addressbook_name': 'junos addressbook name (default: <*>)',
+    'objects_prefix': 'junos address objects prefix (default: O365_)',
+    'object_group_name': 'junos object group name (default: Grp_O365)'
+    'tenantname': 'o365 tenant name (optionnal)',
+    'serviceareas': 'o365 service area (optionnal: Common | Exchange | SharePoint | Skype)',
+    'instance': 'o365 instance (default: Worldwide, Worldwide | China | Germany | USGovDoD | USGovGCCHigh)',
 }
 
 def main():
@@ -39,9 +42,12 @@ def main():
     addressbook_name = args.addressbook_name or '&lt;*&gt;'
     objects_prefix = args.objects_prefix or 'O365_'
     object_group_name = args.object_group_name or 'Grp_O365'
+    tenantname = args.tenantname or None
+    serviceareas = args.serviceareas or None
+    instance = args.instance or 'Worldwide'
 
     clientRequestId = str(uuid.uuid4())
-    endpointSets = webApiGet('endpoints', 'Worldwide', clientRequestId)
+    endpointSets = webApiGet('endpoints', instance, clientRequestId,tenantname,serviceareas)
 
     flatIps = []
     for endpointSet in endpointSets:
@@ -119,9 +125,13 @@ def main():
 
 
 # helper to call the webservice and parse the response
-def webApiGet(methodName, instanceName, clientRequestId):
+def webApiGet(methodName, instanceName, clientRequestId,TenantName=None,ServiceAreas=None):
     ws = "https://endpoints.office.com"
     requestPath = ws + '/' + methodName + '/' + instanceName + '?clientRequestId=' + clientRequestId
+    if TenantName is not None
+        requestPath = requestPath + '&TenantName=' + TenantName
+    if ServiceAreas is not None
+        requestPath = requestPath + '&ServiceAreas=' + ServiceAreas
     ssl_context = ssl._create_unverified_context()
     request = urllib.request.Request(requestPath)
     with urllib.request.urlopen(request,context=ssl_context) as response:
