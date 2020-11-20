@@ -10,7 +10,7 @@ import urllib.request
 import uuid
 import ssl
 
-arguments = {'debug': 'to enable debug output'}
+arguments = {'debug': 'enable debug output'}
 
 def main():
 
@@ -95,7 +95,9 @@ def main():
             cu.load(config_xml, format="xml")
             if debug:
                 cu.pdiff()
-            cu.commit()
+            diff = cu.diff(use_fast_diff=True)
+            if diff is not None:
+                cu.commit()
 
     except Exception as err:
         print (err)

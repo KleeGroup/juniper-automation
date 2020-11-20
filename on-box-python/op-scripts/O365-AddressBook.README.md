@@ -1,6 +1,6 @@
-###Required junos/python3
+### Required junos/python3
 
-# Running directly from the git version
+## Running directly from the git version
 
 Add the following to your configuration :
 ```
@@ -11,9 +11,9 @@ Run the following command from the operationnal mode :
 ```
 op url https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-box-python/op-scripts/O365-AddressBook.py
 ```
-# Running from a local copy
+## Running from a local copy
 
-Copy the file in the following location of your SRX : /cf/var/db/scripts/op/
+Copy the file in the following location of your SRX : /var/db/scripts/op/
 
 Add the following to your configuration :
 ```
