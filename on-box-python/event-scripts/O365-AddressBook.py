@@ -1,7 +1,6 @@
 from junos import Junos_Context
 from junos import Junos_Trigger_Event
 from junos import Junos_Received_Events
-from junos import Junos_Remote_Execution_Details
 from jnpr.junos import Device
 from jnpr.junos.utils.config import Config
 from jnpr.junos.exception import *
