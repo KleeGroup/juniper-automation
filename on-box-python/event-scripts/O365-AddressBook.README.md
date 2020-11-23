@@ -62,5 +62,5 @@ set security address-book untrust apply-groups O365
 
 To use it on a policy from lan to untrust :
 ```
-set security policy from lan to untrust policy Allow_O365 set match destination-address Grp_O365
+set security policies from lan to untrust policy Allow_O365 set match destination-address Grp_O365
 ```
