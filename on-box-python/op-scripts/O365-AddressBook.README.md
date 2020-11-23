@@ -1,5 +1,6 @@
 > Required junos/python3
 
+## Create / Update Objects
 ### Running directly from the git version
 
 Add the following to your configuration :
@@ -44,3 +45,15 @@ O365 Options : (see [http://aka.ms/ipurlws](http://aka.ms/ipurlws))
 - tenantname: o365 tenant name (optionnal)
 - serviceareas: o365 service area (optionnal: Common | Exchange | SharePoint | Skype)
 - instance: o365 instance (default: Worldwide, Worldwide | China | Germany | USGovDoD | USGovGCCHigh)
+
+## To use objects
+
+E.g. to use it on the "untrust" address-book :
+```
+set security address-book untrust apply-groups O365
+```
+
+To use it on a policy from lan to untrust :
+```
+set security policy from lan to untrust policy Allow_O365 set match destination-address Grp_O365
+```
