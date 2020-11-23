@@ -31,6 +31,7 @@ op O365-AddressBook.py firstarg firstargvalue
 
 ### Supported Args
 
+General Options :
 - debug: enable debug output
 
 Junos Options :

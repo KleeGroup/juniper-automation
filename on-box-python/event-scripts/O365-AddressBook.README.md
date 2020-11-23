@@ -38,6 +38,7 @@ To set arguments, add the following to your configuration :
 set event-options policy O365-AddressBook then event-script O365-AddressBook.py arguments firstarg firstargvalue
 ```
 
+General Options :
 - debug: enable debug output
 
 Junos Options :
