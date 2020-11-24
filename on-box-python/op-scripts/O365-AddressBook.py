@@ -39,7 +39,8 @@ def main():
     # Extract the value
     debug = args.debug
     config_group_name = args.config_group_name or 'O365'
-    addressbook_name = args.addressbook_name or '&lt;*&gt;'
+    addressbook_name = args.addressbook_name or '<*>'
+    addressbook_name = escape(addressbook_name)
     objects_prefix = args.objects_prefix or 'O365_'
     object_group_name = args.object_group_name or 'Grp_O365'
     tenantname = args.tenantname or None
@@ -136,6 +137,16 @@ def webApiGet(methodName, instanceName, clientRequestId,TenantName=None,ServiceA
     request = urllib.request.Request(requestPath)
     with urllib.request.urlopen(request,context=ssl_context) as response:
         return json.loads(response.read().decode())
+
+def escape(s, quote=None):
+    '''Replace special characters "<" and ">" to HTML-safe sequences.
+    If the optional flag quote is true, the quotation mark character (")
+is also translated.'''
+    s = s.replace("<", "&lt;")
+    s = s.replace(">", "&gt;")
+    if quote:
+        s = s.replace('"', "&quot;")
+    return s
 
 if __name__ == "__main__":
     main()

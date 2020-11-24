@@ -1,6 +1,3 @@
-from junos import Junos_Context
-from junos import Junos_Trigger_Event
-from junos import Junos_Received_Events
 from jnpr.junos import Device
 from jnpr.junos.utils.config import Config
 from jnpr.junos.exception import *
@@ -12,13 +9,13 @@ import tempfile
 import urllib.request
 import uuid
 import ssl
+import re
 
 arguments = {
     'debug': 'enable debug output',
     'config_group_name': 'junos configuration group name (default: O365)',
-    'addressbook_name': 'junos addressbook name (default: <*>)',
-    'objects_prefix': 'junos address objects prefix (default: O365_)',
-    'object_group_name': 'junos object group name (default: Grp_O365)',
+    'routing_table': 'junos routing table where to put routes (default: inet.0, eg myroutingtable.inet.0 or <*>.inet.0)',
+    'route_target': '(Mandatory) junos route destination in xml (default: empty, eg "<next-hop>192.168.0.10</next-hop>")',
     'tenantname': 'o365 tenant name (optionnal)',
     'serviceareas': 'o365 service area (optionnal: Common | Exchange | SharePoint | Skype)',
     'instance': 'o365 instance (default: Worldwide, Worldwide | China | Germany | USGovDoD | USGovGCCHigh)'
@@ -27,7 +24,7 @@ arguments = {
 def main():
 
     usage = """
-        This script collect o365 ip to create address-book in O365 Group
+        This script collect o365 ip to create static routes in O365 Group
     """
     print (usage)
 
@@ -40,15 +37,22 @@ def main():
     args = parser.parse_args()
 
     # Extract the value
-    debug = args.debug
+    debug = args.debug or None
     config_group_name = args.config_group_name or 'O365'
-    addressbook_name = args.addressbook_name or '<*>'
-    addressbook_name = escape(addressbook_name)
-    objects_prefix = args.objects_prefix or 'O365_'
-    object_group_name = args.object_group_name or 'Grp_O365'
+    routing_table = args.routing_table or 'inet.0'
+    route_target = args.route_target or None
+    if route_target is None:
+        print('route_target argument is required - eg "<next-hop>192.168.0.10</next-hop>"');
+        return
     tenantname = args.tenantname or None
     serviceareas = args.serviceareas or None
     instance = args.instance or 'Worldwide'
+    routing_table_instance_name = re.search(r'(.+)\.inet\.0', routing_table) or None
+    if routing_table_instance_name is not None:
+        routing_table_instance_name = escape(routing_table_instance_name.group(1))
+    if routing_table != 'inet.0' and routing_table_instance_name is None:
+        print('routing_table wrong format - should be .*.inet.0');
+        return
 
     clientRequestId = str(uuid.uuid4())
     endpointSets = webApiGet('endpoints', instance, clientRequestId,tenantname,serviceareas)
@@ -68,42 +72,44 @@ def main():
         print(','.join(sorted(set([ip for (category, ip, tcpPorts, udpPorts) in flatIps]))))
 
     config_xml = """
-    <configuration>
-        <groups>
-            <name>{0}</name>
-            <security replace="replace">
-                <address-book>
-                    <name>{1}</name>
-""".format(config_group_name,addressbook_name).strip()
-
+        <configuration>
+            <groups>
+                <name>{0}</name>
+    """.format(config_group_name).strip()
+    if routing_table_instance_name is not None:
+        config_xml = config_xml + """
+                <routing-instances>
+                    <instance>
+                    <name>{0}</name>
+    """.format(routing_table_instance_name).strip()
+    config_xml = config_xml + """
+                    <routing-options>
+                        <static>
+    """
     i=0
     for flatIp in flatIps:
         i += 1
         config_xml = config_xml + """
-                    <address>
-                        <name>{0}{1}</name>
-                        <ip-prefix>{2}</ip-prefix>
-                    </address>
- """.format(objects_prefix,i,flatIp[1]).strip()
-
-    i=0 
-    for flatIp in flatIps:
-        i += 1
-        config_xml = config_xml + """
-                    <address-set>
+                    <route>
                         <name>{0}</name>
-                        <address>
-                            <name>{1}{2}</name>
-                        </address>
-                    </address-set>
- """.format(object_group_name,objects_prefix,i).strip()
- 
+                        {1}
+                    </route>
+        """.format(flatIp[1],route_target).strip()
+
     config_xml = config_xml + """
-                </address-book>
-            </security>
+                        </static>
+                    </routing-options>
+    """
+    if routing_table_instance_name is not None:
+        config_xml = config_xml + """
+                    </instance>
+                </routing-instances>
+    """
+    config_xml = config_xml + """
         </groups>
     </configuration>
     """
+
     if debug:
         print(config_xml)
     
