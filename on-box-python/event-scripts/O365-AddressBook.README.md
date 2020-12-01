@@ -5,7 +5,6 @@
 
 Add the following to your configuration :
 ```
-set system scripts op allow-url-for-python
 set system scripts language python3
 set event-options generate-event RefreshO365 time-interval 600
 set event-options policy O365-AddressBook events RefreshO365
@@ -22,7 +21,6 @@ Copy the file in the following location of your SRX : /var/db/scripts/event/
 
 Add the following to your configuration :
 ```
-set system scripts op allow-url-for-python
 set system scripts language python3
 set event-options generate-event RefreshO365 time-interval 600
 set event-options policy O365-AddressBook events RefreshO365
