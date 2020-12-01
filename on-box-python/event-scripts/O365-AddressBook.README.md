@@ -1,4 +1,5 @@
 > Required junos/python3
+> Required access to "https://endpoints.office.com" from the Junos Device
 
 # O365-AddressBook Event Script
 ## Sample Output
@@ -47,6 +48,9 @@ set event-options event-script file O365-AddressBook.py source https://raw.githu
 ### Running from a local copy
 
 Copy the file in the following location of your SRX : /var/db/scripts/event/
+```
+file copy https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-box-python/event-scripts/O365-AddressBook.py /var/db/scripts/event/
+```
 
 Add the following to your configuration :
 ```

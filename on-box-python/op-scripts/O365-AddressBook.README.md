@@ -1,6 +1,7 @@
 
 # O365-AddressBook Op Script
 > Required junos/python3
+> Required access to "https://endpoints.office.com" from the Junos Device
 
 ## Sample Output
 ```
@@ -47,6 +48,9 @@ op url https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-bo
 ### Running from a local copy
 
 Copy the file in the following location of your SRX : /var/db/scripts/op/
+```
+file copy https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-box-python/op-scripts/O365-AddressBook.py /var/db/scripts/op/
+```
 
 Add the following to your configuration :
 ```

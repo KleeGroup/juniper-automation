@@ -1,4 +1,24 @@
 > Required junos/python3
+> Required access to "https://endpoints.office.com" from the Junos Device
+
+# O365-AddressBook Routes Script
+## Sample Output
+```
+groups {
+    O365 {
+        routing-options {
+            static {
+                route 13.107.6.152/31 next-hop 192.168.0.10;
+                route 13.107.18.10/31 next-hop 192.168.0.10;
+                route 13.107.128.0/22 next-hop 192.168.0.10;
+                route 23.103.160.0/20 next-hop 192.168.0.10;
+                [..]
+            }
+        }
+    }
+}
+```
+
 
 ## Create / Update Objects
 ### Running directly from the git version
@@ -17,6 +37,9 @@ op url https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-bo
 ### Running from a local copy
 
 Copy the file in the following location of your SRX : /var/db/scripts/op/
+```
+file copy https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-box-python/op-scripts/O365-Routes.py /var/db/scripts/op/
+```
 
 Add the following to your configuration :
 ```
