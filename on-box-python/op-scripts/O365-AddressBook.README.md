@@ -1,5 +1,32 @@
 > Required junos/python3
 
+## Sample Output
+```
+groups {
+    O365 {
+        security {
+            address-book {
+                <*> {
+                    address O365_1 13.107.6.152/31;
+                    address O365_2 13.107.18.10/31;
+                    address O365_3 13.107.128.0/22;
+                    address O365_4 23.103.160.0/20;
+                    address O365_5 40.96.0.0/13;
+                    [..]
+                    address-set Grp_O365 {
+                        address O365_1;
+                        address O365_2;
+                        address O365_3;
+                        address O365_4;
+                        address O365_5;
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
 ## Create / Update Objects
 ### Running directly from the git version
 
