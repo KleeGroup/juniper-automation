@@ -13,8 +13,8 @@ set event-options policy O365-AddressBook then event-script O365-AddressBook.py
 set event-options event-script file O365-AddressBook.py python-script-user <user-name>
 set event-options event-script file O365-AddressBook.py source https://raw.githubusercontent.com/KleeGroup/juniper-automation/main/on-box-python/event-scripts/O365-AddressBook.py
 ```
-Script will run every 600s (10 min)
-<user-name> must be a junos user account with enought permissions
+- Script will run every 600s (10 min)
+- \<user-name\> must be a junos user account with enought permissions
 
 ### Running from a local copy
 
@@ -29,8 +29,8 @@ set event-options policy O365-AddressBook events RefreshO365
 set event-options policy O365-AddressBook then event-script O365-AddressBook.py
 set event-options event-script file O365-AddressBook.py python-script-user <user-name>
 ```
-Script will run every 600s (10 min)
-<user-name> must be a junos user account with enought permissions
+- Script will run every 600s (10 min)
+- \<user-name\> must be a junos user account with enought permissions
 
 ### Supported Args
 
