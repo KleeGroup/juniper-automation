@@ -1,7 +1,8 @@
+> Requirements :
+> - junos/python3
+> - access to "https://endpoints.office.com" from the Junos Device
 
 # O365-AddressBook Op Script
-> Required junos/python3
-> Required access to "https://endpoints.office.com" from the Junos Device
 
 ## Sample Output
 ```
